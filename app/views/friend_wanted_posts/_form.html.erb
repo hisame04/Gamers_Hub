@@ -19,7 +19,7 @@
       <div class="form-check p-2 border rounded" style="background: #2b2b2b;">
         
         <%= form.check_box :target_game_ids, 
-            { multiple: true, class: "form-check-input" }, 
+            { multiple: true, class: "form-check-input", include_hidden: false }, 
             relation.game_title_id, nil %>
             
         <label class="form-check-label text-white">

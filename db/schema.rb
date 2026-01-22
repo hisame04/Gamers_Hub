@@ -90,21 +90,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_174609) do
     t.index ["game_title_id"], name: "index_gamemodes_on_game_title_id"
   end
 
-  create_table "gameroles", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.integer "game_title_id", null: false
-    t.string "name"
-    t.string "role_type"
-    t.datetime "updated_at", null: false
-    t.index ["game_title_id"], name: "index_gameroles_on_game_title_id"
-  end
-
-  create_table "gametitles", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "name"
-    t.datetime "updated_at", null: false
-  end
-
   create_table "opponents_wanted_posts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "current_need_num"
@@ -187,15 +172,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_21_174609) do
   add_foreign_key "game_role_opponents_post_relations", "opponents_wanted_posts"
   add_foreign_key "game_roles", "game_titles"
   add_foreign_key "gamemodes", "game_titles"
-  add_foreign_key "gameroles", "game_titles"
   add_foreign_key "opponents_wanted_posts", "game_modes"
   add_foreign_key "opponents_wanted_posts", "game_titles"
   add_foreign_key "opponents_wanted_posts", "users"
   add_foreign_key "user_game_relations", "game_modes"
   add_foreign_key "user_game_relations", "game_modes", column: "game_mode_2_id"
-  add_foreign_key "user_game_relations", "game_modes", column: "game_role_2_id"
-  add_foreign_key "user_game_relations", "game_modes", column: "game_role_3_id"
   add_foreign_key "user_game_relations", "game_roles"
+  add_foreign_key "user_game_relations", "game_roles", column: "game_role_2_id"
+  add_foreign_key "user_game_relations", "game_roles", column: "game_role_3_id"
   add_foreign_key "user_game_relations", "game_titles"
   add_foreign_key "user_game_relations", "users"
   add_foreign_key "user_opponents_post_relations", "opponents_wanted_posts"
