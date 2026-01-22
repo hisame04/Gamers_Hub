@@ -1,0 +1,81 @@
+<h1>プロフィール編集</h1>
+<%= form_with(model: @user, local: true) do |f| %>
+  <%#名前の入力%>
+  <div class="field">
+    <%= f.label :name, "名前" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <%#アイコンのアップロード%>
+  <div class="field">
+  <%= f.label :photo, "アイコン" %>
+  <%= f.file_field :photo %>
+  </div>
+
+  <%#自己紹介文の入力%>
+  <div class="field">
+    <%= f.label :introduction, "自己紹介" %>
+    <%= f.text_area :introduction %>
+  </div>
+
+  <%#性別の入力%>
+  <div class="field">
+    <%= f.label :gender, "性別" %>
+    <%= f.radio_button :gender, 1 %>
+    <%= f.label :gender, "男性", value: 1 %>
+    <%= f.radio_button :gender, 2 %>
+    <%= f.label :gender, "女性", value: 2 %>
+    <%= f.radio_button :gender, 3 %>
+    <%= f.label :gender, "その他", value: 3 %>
+    <%= f.radio_button :gender, 4 %>
+    <%= f.label :gender, "非公開", value: 4 %>
+  </div>
+
+  <%#プレイするゲームの入力%>
+  <h3>プレイするゲーム設定</h3>
+
+  <div data-controller="nested-form">
+    <%#user_game_relation_fields.html.erbを使用して入力%>
+    <div data-nested-form-target="target">
+      <%= f.fields_for :user_game_relations do |relation_form| %>
+        <%= render partial: "user_game_relation_fields", locals:{ f: relation_form }%>
+      <% end %>
+    </div>
+
+    <%#入力欄の追加%>
+    <button type="button" class="btn btn-primary mt-3" data-action="click->nested-form#add" style="padding:6px 20px">
+      + ゲームを追加する
+    </button>
+
+    <%#追加の際に作成する雛がた%>
+    <template data-nested-form-target="template">
+      <%= f.fields_for :user_game_relations, UserGameRelation.new, child_index: "NEW_RECORD" do |relation_form| %>
+        <%= render partial: "user_game_relation_fields", locals:{f: relation_form }%>
+      <% end %>
+    </template>
+    
+  </div>
+
+  <div class="actions mt-4" style="margin-top: 30px;">
+    <%#変更を保存するボタン%>
+    <%= f.submit "保存する", 
+        class: "btn submit",
+        style: "background: #5ce1e6; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+    %> 
+     <%#プロフィールページに戻るボタン%>
+    <%= link_to "戻る", user_path, 
+      class: "btn back",
+      style: "background: #ccc; color: #000000; border: none; cursor: pointer; padding: 10px 30px; font-size: 1.1em; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
+    %>
+  </div>
+<% end %>
+
+<hr>
+
+<div style="text-align: center;">
+   <%#メールアドレスとパスワードの再設定ボタン%>
+  <%= link_to "メールアドレス・パスワードの変更はこちら", edit_user_registration_path, 
+      class: "btn",
+      style: "background: #ccc; color: #333; text-decoration: none; padding: 8px 30px; font-size: 0.6em; border-radius: 8px; display: inline-block;" 
+  %>
+</div>

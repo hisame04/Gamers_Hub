@@ -1,0 +1,25 @@
+<p style="color: green"><%= notice %></p>
+<div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%= link_to "戻る", root_path(tab: 'friend', anchor: dom_id(@friend_wanted_post)), 
+      class: "btn back",
+      style: "background: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px; text-decoration: none; display: inline-block;"
+    %>
+  </div>
+
+<%= render @friend_wanted_post %>
+
+<div class="gh-post-edit" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+    <% if current_user == @friend_wanted_post.user %>
+      <%= button_to "編集", edit_friend_wanted_post_path(@friend_wanted_post), 
+        method: :get, 
+        class: "btn post-edit",
+        style: "background-color: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+      %>
+      <%= button_to "削除", @friend_wanted_post, 
+        method: :delete, 
+        class: "btn post-delete",
+        style: "background: #ff6b6b; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;",
+        form: { data: { turbo_confirm: "このポストを本当に削除してもよろしいですか？" } }
+      %>
+    <% end%>
+  </div>

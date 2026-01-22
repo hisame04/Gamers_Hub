@@ -1,0 +1,172 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #333;
+  color: white;
+  overflow: hidden;
+}
+
+/*レイアウトの大枠*/
+.app-wrapper {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/*左サイドバー*/
+.sidebar {
+  width: 280px;
+  background-color: #2b2b2b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  border-right: 1px solid #444;
+  flex-shrink: 0;
+}
+
+/*ロゴ*/
+.sidebar-logo h1 {
+  margin-bottom: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+/*ユーザーアイコン周りの円デザイン*/
+.user-profile-circle {
+  position: relative;
+  top: 10%;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-avatar img, .user-avatar .no-image {
+  width: 110px;
+  height: 110px;
+  top: -98%;
+  border-radius: 50%;
+  background-color: #ccc;
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+}
+
+/*斜めのナビゲーションボタン*/
+.sidebar-nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-item {
+  display: block;
+  width: 90%;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  margin-left: -10px;
+  
+  transform: skewX(-20deg); 
+  transition: all 0.3s;
+}
+
+/*文字だけ傾きを戻す*/
+.nav-text {
+  display: block;
+  transform: skewX(20deg); 
+  font-weight: bold;
+  font-size: 1.1em;
+  padding-left: 20px;
+}
+
+/*ホバー時とアクティブ時*/
+.nav-item:hover, .nav-item.active {
+  background-color: #5ce1e6;
+  border-color: #5ce1e6;
+  color: #333;
+}
+
+
+/*右メインコンテンツ*/
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+}
+
+/*上部ヘッダー（タブ部分)*/
+.top-header {
+  height: 60px;
+  display: flex;
+  background-color: #2b2b2b;
+  border-bottom: 1px solid #444;
+}
+
+.header-tab {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.header-tab.active {
+  background-color: #5ce1e6;
+  color: #333;
+}
+
+/*コンテンツの中身*/
+.content-scrollable {
+  flex: 1;
+  overflow-y: auto; 
+  padding: 20px;
+}
+
+/*検索バーなどの調整用*/
+.search-bar-area {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+/*フローティング投稿ボタン*/
+.floating-btn {
+  position: fixed;
+  bottom: 30px; 
+  right: 30px;
+  z-index: 9999; 
+
+  /*ボタン*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5ce1e6;
+  color: #333;
+  text-decoration: none; 
+  font-weight: bold;
+  padding: 15px 25px;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+  transition: transform 0.2s;
+}
+
+/*ホバー時に少し浮き上がる演出*/
+.floating-btn:hover {
+  transform: translateY(-3px);
+  background-color: #7dfafc;
+  opacity: 1; 
+}

@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  start_time: 2026-01-18 16:33:37
+  game_title: one
+  game_mode: one
+  voice_chat: 1
+  description: MyText
+  status: false
+  need_num: 1
+  current_need_num: 1
+
+two:
+  user: two
+  start_time: 2026-01-18 16:33:37
+  game_title: two
+  game_mode: two
+  voice_chat: 1
+  description: MyText
+  status: false
+  need_num: 1
+  current_need_num: 1

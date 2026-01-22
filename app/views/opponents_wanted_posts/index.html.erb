@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Opponents wanted posts" %>
+
+<h1>Opponents wanted posts</h1>
+
+<div id="opponents_wanted_posts">
+  <% @opponents_wanted_posts.each do |opponents_wanted_post| %>
+    <%= render opponents_wanted_post %>
+  <% end %>
+</div>

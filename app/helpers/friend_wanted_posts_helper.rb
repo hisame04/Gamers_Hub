@@ -1,0 +1,2 @@
+module FriendWantedPostsHelper
+end

@@ -1,0 +1,89 @@
+<div class="nested-form-wrapper game-input-group" 
+     data-new-record="<%= f.object.new_record? %>"
+     data-controller="game-dependency"
+     data-game-dependency-modes-value='<%= GameMode.all.to_json %>'
+     data-game-dependency-roles-value='<%= GameRole.all.to_json %>'>
+  
+  <div class="gh-game-edit-card">
+    
+    <div class="gh-game-edit-header">
+      <%#ゲームタイトルの入力%>
+      <%= f.label :game_title_id, "ゲームタイトル", class: "header-label" %>
+      <%= f.collection_select :game_title_id, GameTitle.all, :id, :name, 
+          { prompt: "選択してください" },
+          { 
+            class: "gh-select-title", 
+            data: { target: "game-dependency.gameSelect", action: "change->game-dependency#updateOptions" } 
+          } 
+      %>
+    </div>
+
+    <div class="gh-game-edit-body">
+      <%#プレイスタイルの入力%>
+      <div class="gh-input-label">
+        <span class="gh-icon-s">🔥</span> <label class="fw-bold">プレイスタイル</label>
+      </div>
+      <div class="mb-2">
+        <%= f.select :play_style, 
+            UserGameRelation::PLAY_STYLES.map { |s| [s[:name], s[:id]] }, 
+            { include_blank: "選択してください" }, 
+            { 
+              class: "gh-select-item", 
+              style: "width: 100%; box-sizing: border-box;" 
+            } 
+        %>
+      </div>
+      
+      <div class="gh-input-section">
+        <%#モードの入力%>
+        <div class="gh-input-label">
+          <span class="gh-icon-s">🎮</span> <label class="fw-bold">よく遊ぶモード (最大3つ)</label>
+        </div>
+        <% [:game_mode_id, :game_mode_2_id].each_with_index do |column, i| %>
+          <div class="mb-2">
+            <%= f.select column, [], { prompt: "#{i+1}. 先にゲームを選択" },
+                { 
+                  class: "gh-select-item",
+                  data: { 
+                    target: "game-dependency.modeSelect",
+                    selected_value: f.object.public_send(column),
+                    index: i + 1
+                  }
+                } 
+            %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="gh-input-section">
+        <%#ロール・キャラの入力%>
+        <div class="gh-input-label">
+           <span class="gh-icon-s">👤</span> <label class="fw-bold">よく使うキャラ (最大3つ)</label>
+        </div>
+        <% [:game_role_id, :game_role_2_id, :game_role_3_id].each_with_index do |column, i| %>
+          <div class="mb-2">
+            <%= f.select column, [], { prompt: "#{i+1}. 先にゲームを選択" },
+                { 
+                  class: "gh-select-item",
+                  data: { 
+                    target: "game-dependency.roleSelect", 
+                    selected_value: f.object.public_send(column),
+                    index: i + 1
+                  }
+                } 
+            %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="gh-card-footer-action">
+        <%= f.hidden_field :_destroy %>
+        <%#よく遊ぶゲームの削除ボタン%>
+        <button type="button" class="gh-delete-btn" data-action="click->nested-form#remove">
+          削除
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

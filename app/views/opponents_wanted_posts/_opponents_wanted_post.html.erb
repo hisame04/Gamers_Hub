@@ -1,0 +1,102 @@
+<div id="<%= dom_id opponents_wanted_post %>" class="gh-card">
+  
+  <div class="gh-card-header">
+    <%#ユーザのアイコンの表示%>
+    <div class="gh-user-icon">
+      <%= link_to user_path(opponents_wanted_post.user) do %>
+        <% if opponents_wanted_post.user.photo.attached? %>
+          <%= image_tag opponents_wanted_post.user.photo, class: "user-img" %>
+        <% else %>
+          <%= image_tag "icon_temporary.png", class: "user-img" %>
+        <% end %>
+      <% end %>
+    </div>
+    <%#ユーザ名の表示%>
+    <div class="gh-user-name">
+      <%= opponents_wanted_post.user.name%>
+    </div>
+  </div>
+
+  <div class="gh-card-body">
+    <%#選択したゲームタイトルの表示%>
+    <div class="gh-tags-area">
+      <% title_name = opponents_wanted_post.game_title.name %>
+      
+      <span class="gh-tag-game" style="background-color: <%= game_color(title_name) %>; color: <%= game_text_color(title_name) %>;">
+        <%= title_name %>
+      </span>
+
+      <%#募集中かどうかの表示%>
+      <% if opponents_wanted_post.status%>
+        <span class="gh-tag-status status-closed">終了</span>
+      <% else %>
+        <span class="gh-tag-status status-open">募集中</span>
+      <% end %>
+
+      <% unless opponents_wanted_post.status %>
+        <span class="gh-remaining-count">あと<%= opponents_wanted_post.current_need_num%>人</span>
+      <% end %>
+    </div>
+
+    <div class="gh-info-list">
+      <%#日付の表示%>
+      <div class="gh-info-row">
+        <span class="gh-icon">🗓️</span>
+        <%= opponents_wanted_post.start_time.strftime("%m月%d日 %H:%M~") %>
+      </div>
+
+      <%#ロールの表示%>
+      <div class="gh-info-row">
+        <span class="gh-icon">👥</span>
+        <% if opponents_wanted_post.game_roles.any? %>
+          <%= opponents_wanted_post.game_roles.map(&:name).join("/") %>
+        <% else %>
+          指定なし
+        <% end %>
+      </div>
+
+      <%#モードの表示%>
+      <div class="gh-info-row">
+        <span class="gh-icon">🎮</span>
+        <%= opponents_wanted_post.game_mode.name %>
+      </div>
+
+      <%#ボイスチャットの有無の表示%>
+      <div class="gh-info-row">
+        <span class="gh-icon">🎙️</span>
+        <% if opponents_wanted_post.voice_chat == 0%>
+          あり
+        <% elsif opponents_wanted_post.voice_chat == 1%>
+          なし
+        <% elsif opponents_wanted_post.voice_chat == 2%>
+          どちらでも
+        <% end%>
+      </div>
+
+    </div>
+
+    <div class="gh-description-area">
+      <div class="gh-description-divider"></div>
+      <p class="gh-description-text">
+        <span class="gh-icon">💭</span>
+        <%= opponents_wanted_post.description %>
+      </p>
+    </div>
+
+    <%#作成時刻の表示%>
+    <div class="gh-created-at">
+      <% if opponents_wanted_post.created_at > 24.hours.ago %>
+        <%= time_ago_in_words(opponents_wanted_post.created_at) %> ago
+      <% else %>
+        <%= opponents_wanted_post.created_at.strftime("%Y/%m/%d %H:%M") %>
+      <% end %>
+    </div>
+
+  </div>
+
+  <%#詳細ページへのリンク%>
+  <% unless action_name == "show" %>
+    <%= link_to "詳細を見る", opponents_wanted_post, class: "gh-card-footer-btn" %>
+  <% end %>
+
+</div>

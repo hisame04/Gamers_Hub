@@ -1,0 +1,19 @@
+<p style="color: green"><%= notice %></p>
+
+<%#検索ページに戻るボタン%>
+<% content_for :title, "Opponents wanted posts" %>
+<div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%= button_to "検索に戻る", search_opponents_wanted_posts_path, 
+        method: :get, 
+        class: "btn back",
+        style: "background: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;"
+    %>
+</div>
+<h1>検索結果</h1>
+
+<%#結果の表示%>
+<div id="opponents_wanted_posts">
+  <% @opponents_wanted_posts.each do |opponents_wanted_post| %>
+    <%= render opponents_wanted_post %>
+  <% end %>
+</div>

@@ -1,0 +1,36 @@
+<div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%= link_to "戻る", root_path(tab: 'friend'), 
+        class: "btn back",
+        style: "background: #7dd3fc; color: #000000; text-decoration: none; display: inline-block; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;"
+    %>
+</div>
+
+<div class="gh-card">
+    <div class="gh-card-header">
+        <h1>募集を検索</h1>
+    </div>
+
+    <div class="gh-card-body">
+    <%= form_with(url: result_opponents_wanted_posts_path, method: :get, local: true) do |form| %>
+      
+        <div>
+            <%= form.label :game_title_id, 'ゲームタイトル', class: "form-label fw-bold" %>
+            <%= form.collection_select :game_title_id, GameTitle.all, :id, :name,{ include_blank: "指定なし" }, { class: "form-control" } %>
+        </div>
+
+        <div>
+            <%= form.label :play_style, 'プレイスタイル', class: "form-label fw-bold" %>
+            <%= form.select :play_style, 
+                UserGameRelation::PLAY_STYLES.map { |s| [s[:name], s[:id]] }, 
+                { include_blank: "指定なし" }, 
+                { class: "form-control" }
+            %>
+        </div>
+
+        
+        <div class="text-center mt-4">
+            <%= form.submit '検索する', class: "btn btn-primary" %>
+        </div>
+    <%end%>
+    </div>
+</div>

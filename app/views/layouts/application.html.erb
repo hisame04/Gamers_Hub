@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Gamers Hub" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Gamers Hub">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <div class="app-wrapper">
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+           <%= image_tag "logo.png", alt: "Gamers Hub" %>
+        </div>  
+
+        <div class="user-profile-circle">
+          <%= image_tag "icon_frame.png", class: "circle-decoration-img" %>
+        </div>
+        <div class="user-avatar">
+          <% if user_signed_in? %>
+            <% if current_user.photo.attached? %>
+              <%= image_tag current_user.photo, height: 100, style: "border-radius: 50%;" %>
+            <% else %>
+              <%= image_tag "icon_temporary.png", height: 100, style: "border-radius: 50%;" %>
+            <% end %>
+          <% else %>
+            <div class="no-image"></div>
+          <% end %> 
+        </div>
+
+        <nav class="sidebar-nav">
+          <% if user_signed_in? %>
+            <%= link_to user_path(current_user), class: "nav-item #{'active' if current_page?(user_path(current_user))}" do %>
+              <span class="nav-text">マイページ</span>
+            <% end %>
+
+            <%= link_to root_path, class: "nav-item #{'active' if current_page?(root_path)}" do%>
+              <span class="nav-text">タイムライン</span>
+            <% end %>
+
+            <a href="#" class="nav-item"><span class="nav-text">フレンド</span></a>
+            <a href="#" class="nav-item"><span class="nav-text">オプション</span></a>
+          <% else %>
+             <%= link_to "ログイン", new_user_session_path, class: "nav-item" %>
+          <% end %>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <%= yield :header %>
+        <div class="content-scrollable">
+           <% if notice %><p class="notice"><%= notice %></p><% end %>
+           <% if alert %><p class="alert"><%= alert %></p><% end %>
+
+           <%= yield %>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<p style="color: green"><%= notice %></p>
+  <%#タイムラインに戻るボタン%>
+  <div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%= button_to "戻る", root_path(tab: 'opponent', anchor: dom_id(@opponents_wanted_post)), 
+      method: :get, 
+      class: "btn back",
+      style: "background: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;"
+    %>
+  </div>
+
+<%#投稿の表示%>
+<%= render @opponents_wanted_post %>
+
+<div>
+  <div class="gh-post-edit" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+    
+    <% if current_user == @opponents_wanted_post.user %>
+      <%#編集ボタン%>
+      <%= button_to "編集", edit_opponents_wanted_post_path(@opponents_wanted_post), 
+        method: :get, 
+        class: "btn post-edit",
+        style: "background-color: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+      %>
+      <%#削除ボタン%>
+      <%= button_to "削除", @opponents_wanted_post, 
+        method: :delete, 
+        class: "btn post-delete",
+        style: "background: #ff6b6b; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;",
+        form: { data: { turbo_confirm: "このポストを本当に削除してもよろしいですか？" } }
+      %>
+    <% end%>
+  </div>
+
+  <div class="entry-section" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 20px;">
+  <% if user_signed_in? %>
+    <%#エントリーしていたら%>
+    <% if @opponents_wanted_post.entered_by?(current_user) %>
+      <%#エントリー取り消しボタン%>
+      <%= button_to "エントリーを取り消す", 
+            opponents_wanted_post_user_opponents_post_relations_path(@opponents_wanted_post), 
+            method: :delete, 
+            class: "btn btn-danger" %>
+    <%#エントリーしていなくて募集中だったら%>
+    <% elsif !@opponents_wanted_post.status %>
+      <%#参加希望ボタン%>
+      <%= button_to "参加希望を出す！", 
+            opponents_wanted_post_user_opponents_post_relations_path(@opponents_wanted_post), 
+            method: :post, 
+            class: "btn btn-primary" %>
+    <%#募集中終了だったら%>
+    <% else %>
+        <button class="btn btn-secondary" disabled style="background-color: #ccc; border: none; padding: 10px 20px;">募集終了</button>
+    <% end %>
+  <% end %>
+
+  <h3>参加希望者 (<%= @opponents_wanted_post.applicants.count %>人)</h3>
+  
+  <div class="applicants-list" style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <%#エントリーしている人がいたら%>
+    <% if @opponents_wanted_post.applicants.any? %>
+      <% @opponents_wanted_post.applicants.each do |user| %>
+        
+        <div class="applicant-item" style="text-align: center;">
+          <%#エントリーしているユーザのアイコンと名前の表示%>
+          <%= link_to user_path(user) do %>
+            <% if user.photo.attached? %>
+              <%= image_tag user.photo, size: "50x50", style: "border-radius: 50%;" %>
+            <% else %>
+              <%= image_tag "icon_temporary.png", size: "50x50", style: "border-radius: 50%;" %>
+            <% end %>
+            <div style="font-size: 0.8em;"><%= user.name %></div> 
+          <% end %>
+        </div>
+
+      <% end %>
+    <%#エントリーしている人がいなかったら%>
+    <% else %>
+      <p>まだ参加希望者はいません。</p>
+    <% end %>
+  </div>
+
+</div>

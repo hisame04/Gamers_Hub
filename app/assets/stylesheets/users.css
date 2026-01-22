@@ -1,0 +1,178 @@
+/*プロフィールの名前部分*/
+.gh-profile-name{
+  background-color: #5ce1e6;
+  width: 100%;
+  height: 10%;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/*カード全体*/
+.gh-game-edit-card {
+  border: 1px solid #5ce1e6; 
+  border-radius: 8px;
+  overflow: hidden; 
+  margin-bottom: 20px;
+  background-color: #333;
+}
+
+/*ヘッダー*/
+.gh-game-edit-header {
+  background-color: #5ce1e6;
+  padding: 15px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.header-label {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #333;
+  opacity: 0.8;
+}
+
+/*ゲームタイトル選択のプルダウン*/
+.gh-select-title {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.gh-select-title:focus {
+  outline: 2px solid #333;
+}
+
+/*ボディ*/
+.gh-game-edit-body {
+  padding: 20px;
+  color: white;
+}
+
+/*入力セクション*/
+.gh-input-section {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 20px;
+}
+.gh-input-section:last-child {
+  border-bottom: none;
+}
+
+/*ラベル*/
+.gh-input-label {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gh-icon-s {
+  font-size: 1.2em;
+}
+
+/*プルダウンの並び*/
+.gh-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/*モード・キャラ選択のプルダウン*/
+.gh-select-item {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 1em;
+  border: 1px solid #555;
+  background-color: #2b2b2b;
+  color: white;
+  border-radius: 4px;
+}
+
+/*削除ボタンエリアs*/
+.gh-card-footer-action {
+  text-align: right;
+  padding-top: 10px;
+}
+
+.gh-delete-btn {
+  background-color: transparent;
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.gh-delete-btn:hover {
+  background-color: #ff6b6b;
+  color: white;
+}
+
+
+/*全体の余白を詰める*/
+.gh-game-edit-card {
+  margin-bottom: 10px;
+}
+
+/*ヘッダーを小さく*/
+.gh-game-edit-header {
+  padding: 8px 10px;
+}
+
+.header-label {
+  font-size: 0.7em;
+  margin-bottom: 2px;
+}
+
+.gh-select-title {
+  font-size: 1.1em; 
+  padding: 5px;
+}
+
+/*ボディを小さく*/
+.gh-game-edit-body {
+  padding: 10px;
+}
+
+.gh-input-section {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}
+
+.gh-input-label {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+  gap: 4px; 
+}
+
+.gh-icon-s {
+  font-size: 1.0em;
+}
+
+.gh-select-item {
+  font-size: 0.85em; 
+  padding: 6px 8px;
+}
+
+.game-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 10px; 
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .game-card-grid { grid-template-columns: 1fr; } 
+}

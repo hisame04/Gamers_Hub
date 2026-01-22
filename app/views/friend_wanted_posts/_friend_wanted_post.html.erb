@@ -1,0 +1,83 @@
+<div id="<%= dom_id friend_wanted_post %>" class="gh-card">
+  <div class="gh-card-header">
+    <div class="gh-user-icon">
+      <%= link_to user_path(friend_wanted_post.user) do %>
+        <% if friend_wanted_post.user.photo.attached? %>
+          <%= image_tag friend_wanted_post.user.photo, class: "user-img" %>
+        <% else %>
+          <div class="no-img"></div>
+        <% end %>
+      <% end %> 
+    </div>
+    <div class="gh-user-name">
+      <%= friend_wanted_post.user.name%>
+    </div>
+  </div>
+
+  <div class="gh-card-body">
+    <div class="gh-info-list">
+
+    <% 
+       ids = friend_wanted_post.target_game_ids || []
+       clean_ids = ids.map(&:to_i).reject { |id| id == 0 }
+       target_relations = friend_wanted_post.user.user_game_relations.where(game_title_id: clean_ids) 
+    %>
+      <div class="gh-info-row">
+        <span>性別🚺🚹：</span>
+        <% case friend_wanted_post.user.gender%>
+          <% when 1%>
+            男性
+          <% when 2%>
+            女性
+          <% when 3%>
+            その他
+          <% when 4%>
+            非公開
+          <% else %>
+            未設定
+          <% end %>
+      </div>
+      
+      
+      <span>よく遊ぶゲーム🎮</span>
+      <div class="gh-info-row" style="margin-left: 20px;">  
+        <div class="gh-tags-area">
+          <% target_relations.each do |relation| %>
+              <div class="border rounded px-3 py-2" style="background: #333; border-color: #5ce1e6 !important;">
+                
+                <span class="gh-tag-game" style="background-color: <%= game_color(relation.game_title.name) %>; color: <%= game_text_color(relation.game_title.name) %>;">
+                  <%= relation.game_title.name %>
+                </span>：
+
+                <span class="gh-tag-game" style="background-color: #898989; color: #000000;">
+                  <%= relation.play_style_name %>
+                </span>
+              </div>
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="gh-created-at">
+    <% if friend_wanted_post.created_at > 24.hours.ago %>
+      <%= time_ago_in_words(friend_wanted_post.created_at) %> ago
+    <% else %>
+      <%= friend_wanted_post.created_at.strftime("%Y/%m/%d %H:%M") %>
+    <% end %>
+  </div>
+
+  <div class="gh-description-area">
+    <div class="gh-description-divider"></div>
+    <p class="gh-description-text">
+      <span class="gh-icon">💭</span>
+      <%= friend_wanted_post.introduction %>
+    </p>
+  </div>
+
+  <% unless action_name == "show" %>
+    <%= link_to "詳細を見る", friend_wanted_post, class: "gh-card-footer-btn" %>
+  <% end %>
+
+</div>

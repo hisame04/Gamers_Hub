@@ -1,0 +1,123 @@
+<%= form_with(model: opponents_wanted_post) do |form| %>
+  <% if opponents_wanted_post.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(opponents_wanted_post.errors.count, "error") %> prohibited this opponents_wanted_post from being saved:</h2>
+
+      <ul>
+        <% opponents_wanted_post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%#選択したゲームタイトルに合わせてモードとロールなどをjsonを使用して切り替えるため%>
+  <div data-controller="game-dependency"
+       data-game-dependency-modes-value="<%= GameMode.all.to_json %>"
+       data-game-dependency-roles-value="[]"> 
+
+    <%#開始時間の入力%>
+    <div style="margin-bottom: 15px;">
+      <label style="display: block; font-weight: bold;">開始日時</label>
+      <div style="display: flex; gap: 10px;">
+        
+        <div style="flex: 1;">
+          <%= form.label :start_date_part, "日付", style: "font-size: 0.9em; color: #666;" %>
+          <%= form.date_field :start_date_part, class: "form-control", required: true %>
+        
+          <%= form.label :start_time_part, "時間", style: "font-size: 0.9em; color: #666;" %>
+          <%= form.time_field :start_time_part, class: "form-control", required: true %>
+        </div>
+
+      </div>
+    </div>
+
+    <%#ゲームタイトルの入力%>
+    <div>
+      <%= form.label :game_title_id, "ゲームタイトル", style: "display: block" %>
+      <%= form.collection_select :game_title_id, GameTitle.all, :id, :name,
+          { prompt: "選択してください" },
+          { 
+            class: "form-control",
+            required: true ,
+            data: { 
+              target: "game-dependency.gameSelect", 
+              action: "change->game-dependency#updateOptions" 
+            } 
+          } 
+      %>
+    </div>
+
+    <%#ゲームモードの入力%>
+    <div>
+      <%= form.label :game_mode_id, "ゲームモード", style: "display: block" %>
+      <%= form.select :game_mode_id, [], 
+          { prompt: "先にゲームを選択してください" }, 
+          { 
+            class: "form-control",
+            data: { 
+              target: "game-dependency.modeSelect",
+              selected_value: form.object.game_mode_id,
+              action: "change->game-dependency#updateMaxPlayers",
+            }
+          } 
+      %>
+    </div>
+
+    <%#募集ロールの表示%>
+    <div>
+      <%= form.label :game_role_ids, "募集ロール（複数選択可）", style: "display: block" %>
+      
+      <div class="checkbox-list">
+        <%= form.collection_check_boxes(:game_role_ids, GameRole.all, :id, :name) do |b| %>
+          <% role = b.object %>
+          <div class="checkbox-item" 
+               data-game-dependency-target="roleSelect" 
+               data-game-id="<%= role.game_title_id %>"
+               style="display: none;"> <%= b.check_box %>
+            <%= b.label { b.text } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%#必要人数の入力%>
+    <div>
+    <%= form.label :need_num, style: "display: block" %>
+    <%= form.number_field :need_num, min: 1, data: {target: "game-dependency.needNumInput"}, required: true%>
+    </div>
+  </div>
+  
+  <%#ボイスチャットの有無の入力%>
+  <div>
+    <%= form.label :voice_chat, style: "display: block" %>
+    <%= form.radio_button :voice_chat, 0 %>
+    <%= form.label :voice_chat, 'あり', value: 0 %>
+    <%= form.radio_button :voice_chat, 1 %>
+    <%= form.label :voice_chat, 'なし', value: 1 %>
+    <%= form.radio_button :voice_chat, 2 %>
+    <%= form.label :voice_chat, 'どちらでも', value: 2 %>
+  </div>
+
+  <%#詳細(自由記述)の入力%>
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.textarea :description %>
+  </div>
+ 
+  <div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%#入力内容を保存するボタン%>
+    <%= form.submit "保存する", 
+        class: "btn submit",
+        style: "background: #5ce1e6; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+    %>
+
+    <% back_path = @opponents_wanted_post.new_record? ? root_path(tab: 'opponent') : @opponents_wanted_post %>
+
+    <%#タイムラインに戻るボタン%>
+    <%= link_to "戻る", back_path, 
+      class: "btn back",
+      style: "background: #ccc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
+    %>
+  </div>
+<% end %>

@@ -1,0 +1,55 @@
+<div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%#タイムラインページに戻るボタン%>
+    <%= link_to "戻る", root_path(tab: 'opponent'), 
+        class: "btn back",
+        style: "background: #7dd3fc; color: #000000; text-decoration: none; display: inline-block; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;"
+    %>
+</div>
+
+<div class="gh-card">
+    <div class="gh-card-header">
+        <h1>募集を検索</h1>
+    </div>
+
+    <div class="gh-card-body">
+    <%= form_with(url: result_opponents_wanted_posts_path, method: :get, local: true) do |form| %>
+        <%#ゲームタイトルの入力%>
+        <div>
+            <%= form.label :game_title_id, 'ゲームタイトル', class: "form-label fw-bold" %>
+            <%= form.collection_select :game_title_id, GameTitle.all, :id, :name,{ include_blank: "指定なし" }, { class: "form-control" } %>
+        </div>
+        
+        <%#時間の入力%>
+        <div>
+            <%= form.label :start_time, '開始日時（指定した日時以降を表示）',class: "form-label fw-bold" %>
+            <%= form.datetime_field :start_time, class: "form-control" %>
+        </div>
+
+        <%#ボイスチャットの有無の入力%>
+        <div>
+            <%= form.label :ボイスチャット, style: "display: block" %>
+            <%= form.radio_button :voice_chat, 0 %>
+            <%= form.label :voice_chat, 'あり', value: 0 %>
+            <%= form.radio_button :voice_chat, 1 %>
+            <%= form.label :voice_chat, 'なし', value: 1 %>
+            <%= form.radio_button :voice_chat, 2 %>
+            <%= form.label :voice_chat, 'どちらでも', value: 2 %>
+        </div>
+
+        <%#募集状況の入力%>
+        <div>
+            <%= form.label :募集状況, style: "display: block" %>
+            <%= form.radio_button :status, false %>
+            <%= form.label :status, '募集中', value: false %>
+            <%= form.radio_button :status, true %>
+            <%= form.label :status, '終了', value: true %>
+        </div>
+
+        <%#入力した内容で検索するボタン%>
+        <div class="text-center mt-4">
+            <%= form.submit '検索する', class: "btn btn-primary" %>
+        </div>
+
+    <% end %>
+    </div>
+</div>

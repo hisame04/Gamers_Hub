@@ -1,0 +1,137 @@
+<div class="gh-profile-name">
+  <h1><%= @user.name %>のページ</h1>
+</div>
+
+<div class="gh-profile" style="display: flex;  gap: 15px; margin-top: 20px;"><%#横に並べる%>
+  <%#アイコン画像の表示%>
+  <div>
+    <% if @user.photo.attached? %>
+      <%= image_tag url_for(@user.photo), height: 150 %>
+    <% else %>
+      <%= image_tag "icon_temporary.png", height: 150 %>
+    <% end %>
+  </div>
+
+  <div class="gh-profile-detail" style="display: block; gap 15x; margin-top: 0px"><%#縦に並べる%>
+    <%#名前の表示%>
+    <p>名前：<%= @user.name %></p>
+    <%#性別の表示%>
+    <p>性別：
+      <% case @user.gender%>
+      <% when 1%>
+        男性
+      <% when 2%>
+        女性
+      <% when 3%>
+        その他
+      <% when 4%>
+        非公開
+      <% else %>
+        未設定
+      <% end %>
+    </p>
+    <%#自己紹介文の表示%>
+    <p>自己紹介：<%= @user.introduction %></p>
+  </div>
+</div>
+
+<%#プレイするゲームの表示%>
+<h2 class="mb-3 border-bottom pb-2">プレイするゲーム</h2>
+<div class="game-card-grid">
+  <% @user.user_game_relations.each do |relation| %>
+    <%#選択したゲームの色の取得%>
+    <% theme_color = game_color(relation.game_title.name) %>
+    <% text_color  = game_text_color(relation.game_title.name) %>
+
+    <div class="gh-game-edit-card compact" style="border-color: <%= theme_color %>;">
+        <%#ゲームタイトルの表示%>
+        <div class="gh-game-edit-header" style="background-color: <%= theme_color %>;">
+          <div class="header-label" style="color: <%= text_color %>;">GAME TITLE</div>
+          <div class="gh-select-title" style="cursor: default;">
+            <%= relation.game_title.name %>
+          </div>
+        </div>
+
+        <div class="gh-game-edit-body">
+          
+          <%#プレイスタイルの表示%>
+          <div class="gh-input-section">
+            <div class="gh-input-label">
+              <span class="gh-icon-s">🔥</span> プレイスタイル
+            </div>
+            <div class="gh-select-item">
+              <%= relation.play_style_name %>
+            </div>
+          </div>
+          
+          <%#モードの表示%>
+          <div class="gh-input-section">
+            <div class="gh-input-label">
+              <span class="gh-icon-s">🎮</span> よく遊ぶモード
+            </div>
+            
+            <div class="gh-select-item">
+              <% modes = [relation.game_mode, relation.game_mode_2].compact %>
+              <% if modes.present? %>
+                <%= modes.map(&:name).join(' / ') %>
+              <% else %>
+                <span style="color: #888;">未設定</span>
+              <% end %>
+            </div>
+          </div> 
+
+          <%#キャラ・ロールの表示%>
+          <div class="gh-input-section">
+            <div class="gh-input-label">
+              <span class="gh-icon-s">👤</span> よく使うキャラ・ロール
+            </div>
+            <div class="gh-select-item">
+              <% roles = [relation.game_role, relation.game_role_2].compact %>
+              <% if roles.present? %>
+                <%= roles.map(&:name).join(' / ') %>
+              <% else %>
+                <span style="color: #888;">未設定</span>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+  <% end %>
+
+  <%#よく遊ぶゲームが空だったら%>
+  <% if @user.user_game_relations.empty? %>
+    <div class="col-12">
+      <p class="text-muted">まだゲームプロフィールが登ていません。</p>
+    </div>
+  <% end %>
+</div>
+
+<div class="gh-profile-edit" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+  <%#自分のページなら%>
+  <% if current_user == @user %>
+    <%#編集ボタン%>
+    <%= button_to "プロフィール編集", edit_user_path(@user), 
+    method: :get, 
+    class: "btn post-edit",
+    style: "background-color: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+    %>  
+
+    <%#パスワード変更ボタン%>
+    <%= button_to "パスワード変更", edit_user_registration_path, 
+    method: :get, 
+    class: "btn post-edit",
+    style: "background-color: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+    %>  
+
+    <%#ログアウトボタン%>
+    <%= button_to "ログアウト", destroy_user_session_path, 
+      method: :delete, 
+      class: "btn post-edit",
+      style: "background-color: #7dd3fc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" ,
+      form: { data: { turbo_confirm: "ログアウトしてよろしいですか？" }, style: 'display:inline-block;'}
+    %>  
+  <% end %>
+</div>
+
+

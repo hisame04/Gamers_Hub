@@ -1,0 +1,55 @@
+<%= form_with(model: friend_wanted_post) do |form| %>
+  <% if friend_wanted_post.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(friend_wanted_post.errors.count, "error") %> prohibited this friend_wanted_post from being saved:</h2>
+
+      <ul>
+        <% friend_wanted_post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field mb-3">
+  <label class="form-label fw-bold">募集するゲームを選択</label>
+  <div class="d-flex flex-wrap gap-3">
+    
+    <% current_user.user_game_relations.includes(:game_title).each do |relation| %>
+      <div class="form-check p-2 border rounded" style="background: #2b2b2b;">
+        
+        <%= form.check_box :target_game_ids, 
+            { multiple: true, class: "form-check-input" }, 
+            relation.game_title_id, nil %>
+            
+        <label class="form-check-label text-white">
+          <span class="fw-bold"><%= relation.game_title.name %></span><br>
+          <span style="font-size: 0.8em; color: #5ce1e6;">
+            <%= relation.play_style_name %>
+          </span>
+        </label>
+      </div>
+    <% end %>
+
+  </div>
+  </div>
+
+  <div>
+    <%= form.label :introduction, style: "display: block" %>
+    <%= form.text_area :introduction %>
+  </div>
+
+  <div style="display: flex; justify-content: left; gap: 15px; margin-top: 20px;">
+    <%= form.submit "保存する", 
+        class: "btn submit",
+        style: "background: #5ce1e6; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px;" 
+    %>
+
+    <% back_path = @friend_wanted_post.new_record? ? root_path(tab: 'friend') : @friend_wanted_post %>
+
+    <%= link_to "戻る", back_path, 
+      class: "btn back",
+      style: "background: #ccc; color: #000000; border: none; cursor: pointer; padding: 12px 30px; font-size: 1.1em; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;"
+    %>
+  </div>
+<% end %>
