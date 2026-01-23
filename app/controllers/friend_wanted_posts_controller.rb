@@ -25,16 +25,16 @@ class FriendWantedPostsController < ApplicationController
 
   # POST /friend_wanted_posts/search
   def result
-    @friend_wanted_post = FriendWantedPost.all
+    @friend_wanted_posts = FriendWantedPost.all
 
     #ゲームタイトルで絞る
-    if params[:game_title_id].present?
-      @friend_wanted_post = @friend_wanted_post.where(game_title_id: params[:game_title_id])
+    if params[:target_game_ids].present?
+      @friend_wanted_posts = @friend_wanted_posts.where(target_game_ids: params[:target_game_ids])
     end
     
     #プレイスタイルで絞る
     if params[:play_style].present?
-      @friend_wanted_post = @friend_wanted_post.where(play_style: params[:play_style])
+      @friend_wanted_posts = @friend_wanted_posts.where(play_style: params[:play_style])
     end
 
     render :result
